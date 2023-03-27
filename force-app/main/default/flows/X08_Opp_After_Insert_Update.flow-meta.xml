@@ -1,6 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Send a custom notification for opportunities stage equals Closed Won and Amount is greater than 50.000</description>
+        <name>Send_Won_Notification</name>
+        <label>Send Won Notification</label>
+        <locationX>176</locationX>
+        <locationY>695</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>Get_Custom_Notification_Type.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>NotificationBody</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <stringValue>Booom! We have got it</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>recepientIds</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
     <apiVersion>57.0</apiVersion>
+    <assignments>
+        <description>Prepare the collection of recipient Ids</description>
+        <name>Populate_Recipients</name>
+        <label>Populate Recipients</label>
+        <locationX>176</locationX>
+        <locationY>575</locationY>
+        <assignmentItems>
+            <assignToReference>recepientIds</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>$Record.Account.OwnerId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Send_Won_Notification</targetReference>
+        </connector>
+    </assignments>
     <environments>Default</environments>
     <interviewLabel>08 Opp After Insert Update {!$Flow.CurrentDateTime}</interviewLabel>
     <label>08 Opp After Insert Update</label>
@@ -29,6 +86,9 @@
         <label>Create Task</label>
         <locationX>176</locationX>
         <locationY>335</locationY>
+        <connector>
+            <targetReference>Get_Custom_Notification_Type</targetReference>
+        </connector>
         <inputAssignments>
             <field>ActivityDate</field>
             <value>
@@ -68,6 +128,28 @@
         <object>Task</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordLookups>
+        <name>Get_Custom_Notification_Type</name>
+        <label>Get Custom Notification Type</label>
+        <locationX>176</locationX>
+        <locationY>455</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Populate_Recipients</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Desktop_And_Mobile</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>CustomNotificationType</object>
+        <queriedFields>Id</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <start>
         <locationX>50</locationX>
         <locationY>0</locationY>
@@ -95,4 +177,16 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <textTemplates>
+        <name>NotificationBody</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>We have won the opportunity {!$Record.Name} amounting {!$Record.Amount} from {!$Record.Account.Name}. Let&apos;s Celebrate!</text>
+    </textTemplates>
+    <variables>
+        <name>recepientIds</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
 </Flow>

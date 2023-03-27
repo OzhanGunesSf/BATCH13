@@ -43,43 +43,36 @@
         </connector>
         <fields>
             <fieldType>ObjectProvided</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
             <objectFieldReference>Opp_Instance.Name</objectFieldReference>
         </fields>
         <fields>
             <fieldType>ObjectProvided</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
             <objectFieldReference>Opp_Instance.AccountId</objectFieldReference>
         </fields>
         <fields>
             <fieldType>ObjectProvided</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
             <objectFieldReference>Opp_Instance.CloseDate</objectFieldReference>
         </fields>
         <fields>
             <fieldType>ObjectProvided</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
             <objectFieldReference>Opp_Instance.StageName</objectFieldReference>
         </fields>
         <fields>
             <fieldType>ObjectProvided</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
             <objectFieldReference>Opp_Instance.Description</objectFieldReference>
         </fields>
         <fields>
             <fieldType>ObjectProvided</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
             <objectFieldReference>Opp_Instance.LeadSource</objectFieldReference>
         </fields>
         <fields>
             <fieldType>ObjectProvided</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
             <objectFieldReference>Opp_Instance.Type</objectFieldReference>
         </fields>
