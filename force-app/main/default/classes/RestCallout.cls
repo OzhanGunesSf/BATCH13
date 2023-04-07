@@ -5,8 +5,15 @@ public with sharing class RestCallout {
     public static HttpResponse getAnimal(){
         // 1.Prepare HttpRequest and wrap all the necessary data in it.
         HttpRequest request = new HttpRequest();
-        request.setEndpoint('https://th-apex-http-callout.herokuapp.com/animals');
+        request.setEndpoint('callout:Heroku_App/animals');
         request.setMethod('GET');
+/*
+        String username = 'ozhan@test.com';
+        String password = 'Test1234';
+        Blob requestBlob = Blob.valueOf(username + ':' + password);
+        String authorizationString = 'BASIC' + EncodingUtil.base64Encode(requestBlob);
+        request.setHeader('Authorization', authorizationString);
+*/
 
         // 2. Prepare Internet
         Http http = new Http();
@@ -90,7 +97,75 @@ public with sharing class RestCallout {
                 System.debug(ex.getMessage());
             }
        }
-
        return response;
+    }
+
+    public static HttpResponse postEmployee(){
+    //1. Prepare HttpRequest with body
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint('https://api.onlinewebtutorblog.com/employees');
+        request.setMethod('POST');
+        //1.a. Set header based on the body type
+        request.setHeader('Content-Type', 'application/json');
+
+        EmployeeResponse.EmployeeWrapper ew = new EmployeeResponse.EmployeeWrapper();
+        ew.name = 'John Smith';
+        ew.username = 'blackhead';
+        ew.email = 'js@gmail.com';
+        ew.gender = 'Male';
+        ew.designation = 'Salesforce Developer';
+        ew.phone_number = '98362354872';
+        ew.complete_address = '8947 Howell Mountains South Kavon, VT 89670-8443';
+        
+        String jsonBody = JSON.serialize(ew);
+
+        //1.b Set body for request
+        request.setBody(jsonBody);
+
+        //2. Prepare Internet
+        Http http = new Http();
+
+        //3. Send request and handle response
+        HttpResponse response = http.send(request);
+
+        //4. Process HttpResponse
+        System.debug(response.getStatusCode());
+        if(response.getStatusCode() == 200){
+            String jsonString = response.getBody();
+
+            EmployeePostResponse epr = (EmployeePostResponse) JSON.deserialize(jsonString, EmployeePostResponse.class);
+            System.debug(epr) ; 
+            System.debug('Name : ' + epr.data.name); 
+            System.debug('Username : ' + epr.data.username); 
+            System.debug('Id : ' + epr.data.id); 
+            System.debug('Designation : ' + epr.data.designation); 
+            System.debug('Email : ' + epr.data.email); 
+            System.debug('Phone : ' + epr.data.phone_number); 
+        }
+
+        return response;
+    }
+
+    // Endpoint  : https://api.onlinewebtutorblog.com/employees/1
+    // HTTP Method : DELETE
+
+    public static HttpResponse deleteEmployee(){
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint('https://api.onlinewebtutorblog.com/employees/1');
+        request.setMethod('DELETE');
+
+        Http http = new Http();
+
+        HttpResponse response = http.send(request);
+
+        if(response.getStatusCode() == 200){
+            String jsonString = response.getBody();
+
+            EmployeeResponse emr = (EmployeeResponse) JSON.deserialize(jsonString, EmployeeResponse.class);
+
+            System.debug(emr.msg);
+        }
+
+        return response;
     }
 }
