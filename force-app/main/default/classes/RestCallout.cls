@@ -5,7 +5,7 @@ public with sharing class RestCallout {
     public static HttpResponse getAnimal(){
         // 1.Prepare HttpRequest and wrap all the necessary data in it.
         HttpRequest request = new HttpRequest();
-        request.setEndpoint('callout:Heroku_App/animals');
+        request.setEndpoint('https://th-apex-http-callout.herokuapp.com/animals');
         request.setMethod('GET');
 /*
         String username = 'ozhan@test.com';
