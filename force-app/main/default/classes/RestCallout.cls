@@ -132,6 +132,7 @@ public with sharing class RestCallout {
         System.debug(response.getStatusCode());
         if(response.getStatusCode() == 200){
             String jsonString = response.getBody();
+            System.debug(jsonString);
 
             EmployeePostResponse epr = (EmployeePostResponse) JSON.deserialize(jsonString, EmployeePostResponse.class);
             System.debug(epr) ; 
@@ -160,6 +161,7 @@ public with sharing class RestCallout {
 
         if(response.getStatusCode() == 200){
             String jsonString = response.getBody();
+            System.debug(jsonString);
 
             EmployeeResponse emr = (EmployeeResponse) JSON.deserialize(jsonString, EmployeeResponse.class);
 
