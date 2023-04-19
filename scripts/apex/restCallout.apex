@@ -7,3 +7,5 @@ RestCallout.getEmployees();
 RestCallout.postEmployee();
 
 RestCallout.deleteEmployee();
+
+RestCalloutCase.getCase();
